@@ -1,0 +1,13 @@
+{
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "lit-html.tags": [
+        "html"
+    ],
+    "lit-html.format.enabled": true,
+    "typescript.tsserver.useSyntaxServer": "never",
+}

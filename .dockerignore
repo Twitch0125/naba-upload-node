@@ -1,0 +1,8 @@
+node_modules
+extracted
+uploads
+.vscode
+Dockerfile
+.dockerignore
+.git
+.gitignore
