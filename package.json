@@ -1,6 +1,7 @@
 {
   "type": "module",
   "scripts": {
+    "start": "node main.js",
     "uno": "unocss -c uno.config.js --watch",
     "uno:build": "unocss -c uno.config.js"
   },

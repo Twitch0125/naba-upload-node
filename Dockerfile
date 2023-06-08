@@ -6,6 +6,7 @@ WORKDIR /app
 ENV AUTH_PASSWORD=test
 COPY pnpm-lock.yaml pnpm-lock.yaml
 RUN pnpm fetch --prod
-ADD . .
+COPY package.json package.json
 RUN pnpm install --offline --prod
+ADD . .
 CMD ["node", "main.js"]
