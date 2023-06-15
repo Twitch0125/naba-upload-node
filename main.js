@@ -28,7 +28,6 @@ app.post(
   "/upload",
   basicAuth({ username: "admin", password: process.env.AUTH_PASSWORD }),
   async (ctx) => {
-    console.time("upload");
     const body = await ctx.req.raw.formData();
     /** @type {File} */
     const file = body.get("file");
@@ -58,7 +57,6 @@ app.post(
     });
     uploadedFileReadStream.pipe(gunzip).pipe(untar);
     await finished(uploadedFileReadStream);
-    console.timeEnd("upload");
     return ctx.html(UploadPage({ message: "Upload successful!" }));
   }
 );
