@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "paths": {
+            "#html": ["./templates/html.js"],
+            "#templates/*": ["./templates/*"],
+            "#components/*": ["./templates/components/*"]
+        }
+    }
+}

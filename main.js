@@ -5,6 +5,7 @@ import { basicAuth } from "hono/basic-auth";
 import { compress } from "hono/compress";
 import { serveStatic } from "@hono/node-server/serve-static";
 import { UploadPage } from "#templates/upload.js";
+import { TestPage } from "#templates/test.js";
 import fsExtra from "fs-extra";
 import { serve } from "@hono/node-server";
 import { Writable } from "node:stream";
@@ -13,10 +14,9 @@ import { createReadStream, createWriteStream } from "node:fs";
 import { extract } from "tar-stream";
 import { createGunzip } from "node:zlib";
 import { writeFile } from "node:fs/promises";
-
 const { ensureDir, ensureFile, open } = fsExtra;
 const app = new Hono({ router: new RegExpRouter() });
-
+app.get("/html", (ctx) => ctx.html(TestPage()));
 app.get(
   "/upload",
   basicAuth({ username: "admin", password: process.env.AUTH_PASSWORD }),
@@ -28,6 +28,7 @@ app.post(
   "/upload",
   basicAuth({ username: "admin", password: process.env.AUTH_PASSWORD }),
   async (ctx) => {
+    console.time("upload");
     const body = await ctx.req.raw.formData();
     /** @type {File} */
     const file = body.get("file");
@@ -57,6 +58,7 @@ app.post(
     });
     uploadedFileReadStream.pipe(gunzip).pipe(untar);
     await finished(uploadedFileReadStream);
+    console.timeEnd("upload");
     return ctx.html(UploadPage({ message: "Upload successful!" }));
   }
 );
@@ -74,18 +76,17 @@ app.get(
     rewriteRequestPath: (path) => path.replace(/^\/public/, ""),
   })
 );
-app.get(
-  "/*",
-  compress(),
-  async (ctx, next) => {
+app.get("/*", compress(), async (ctx, next) => {
+  if (ctx.req.url.endsWith(".html")) {
+    ctx.header("Cache-Control", "no-cache");
+  } else {
     ctx.header(
       "Cache-Control",
-      "max-age=86400, stale-while-revalidate=172800, must-revalidate, immutable, must-understand"
+      "max-age=86400, stale-while-revalidate=172800, must-revalidate, immutable, must-understand",
     );
-    await next();
-  },
-  serveStatic({ root: "./extracted/news/html" })
-);
+  }
+  await next();
+}, serveStatic({ root: "./extracted/news/html" }));
 
 serve({ port: 8000, fetch: app.fetch }, (info) => {
   console.log(`Listening on http://localhost:${info.port}`); // Listening on http://localhost:3000
