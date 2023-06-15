@@ -1,6 +1,7 @@
 # Benchmarks
 
 oha -z 10s http://localhost:8000/html
+
 Summary:
   Success rate: 100.00%
   Total:        10.0007 secs
@@ -14,19 +15,21 @@ Summary:
   Size/sec:     3.12 MiB
 
 oha -z 10s http://localhost:8000/upload
+
 Summary:
   Success rate: 100.00%
-  Total:        10.0007 secs
-  Slowest:      0.0235 secs
-  Fastest:      0.0038 secs
-  Average:      0.0077 secs
-  Requests/sec: 6520.9160
+  Total:        10.0002 secs
+  Slowest:      0.0229 secs
+  Fastest:      0.0024 secs
+  Average:      0.0086 secs
+  Requests/sec: 5841.1822
 
-  Total data:   764.23 KiB
-  Size/request: 12 B
-  Size/sec:     76.42 KiB
+  Total data:   121.39 MiB
+  Size/request: 2.13 KiB
+  Size/sec:     12.14 MiB
 
 oha -z 10s http://localhost:8000/index.html
+
 Summary:
   Success rate: 100.00%
   Total:        10.0010 secs
